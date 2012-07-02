@@ -12,13 +12,13 @@ class RememberTokenManager(models.Manager):
     def get_by_string(self, token_string):
         """Return the token for the given token_string"""
         try:
-            user_id, token_hash = token_string.split(':')
+            user_id, token_raw = token_string.split(':')
         except ValueError:
             return
 
         max_age = datetime.now() - timedelta(seconds=settings.COOKIE_AGE)
         for token in self.filter(created_initial__gte=max_age, user=user_id):
-            if check_password(token_hash, token.token_hash):
+            if check_password(token_raw, token.token_hash):
                 return token
 
     def clean_remember_tokens(self):
