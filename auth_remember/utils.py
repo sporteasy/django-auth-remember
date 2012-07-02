@@ -65,4 +65,11 @@ def set_cookie(response, token):
 
 
 def delete_cookie(response):
-    response.delete_cookie(COOKIE_NAME)
+    response.set_cookie(COOKIE_NAME, "deleted",
+        max_age=0, expires='Thu, 01-Jan-1970 00:00:00 GMT',
+        domain=settings.SESSION_COOKIE_DOMAIN,
+        path=settings.SESSION_COOKIE_PATH,
+        secure=settings.SESSION_COOKIE_SECURE or None,
+        httponly=settings.SESSION_COOKIE_HTTPONLY or None)
+
+    return response
