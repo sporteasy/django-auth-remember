@@ -17,7 +17,13 @@ class AuthRememberMiddleware(object):
         token = request.COOKIES.get(COOKIE_NAME, None)
         if not token:
             return
-        user = django_auth.authenticate(token_string=token, request=request)
+        user = django_auth.authenticate(token_string=token)
+
+        # since the token changes on each login, we need to update the cookie
+        if hasattr(user, '_auth_remember_token'):
+            utils.preset_cookie(request, user._auth_remember_token)
+            delattr(user, '_auth_remember_token')
+
         if user:
             user._auth_remember_user = True
             django_auth.login(request, user)
