@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 
 from auth_remember import settings
-from auth_remember.auth_utils import check_password
+from django.contrib.auth.hashers import check_password
 
 
 class RememberTokenManager(models.Manager):
