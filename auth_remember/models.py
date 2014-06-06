@@ -2,9 +2,9 @@ from datetime import timedelta
 
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
 
-from auth_remember import settings
+from auth_remember import settings as local_settings
+from django.conf import settings
 from django.contrib.auth.hashers import check_password
 
 
@@ -17,13 +17,13 @@ class RememberTokenManager(models.Manager):
         except ValueError:
             return
 
-        max_age = timezone.now() - timedelta(seconds=settings.COOKIE_AGE)
+        max_age = timezone.now() - timedelta(seconds=local_settings.COOKIE_AGE)
         for token in self.filter(created_initial__gte=max_age, user=user_id):
             if check_password(token_raw, token.token_hash):
                 return token
 
     def clean_remember_tokens(self):
-        max_age = timezone.now() - timedelta(seconds=settings.COOKIE_AGE)
+        max_age = timezone.now() - timedelta(seconds=local_settings.COOKIE_AGE)
         return self.filter(created_initial__lte=max_age).delete()
 
 
@@ -34,6 +34,6 @@ class RememberToken(models.Model):
 
     created_initial = models.DateTimeField(editable=False, blank=False)
 
-    user = models.ForeignKey(User, related_name="remember_me_tokens")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="remember_me_tokens")
 
     objects = RememberTokenManager()
