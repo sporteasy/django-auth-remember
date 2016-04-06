@@ -73,3 +73,14 @@ def delete_cookie(response):
         httponly=settings.SESSION_COOKIE_HTTPONLY or None)
 
     return response
+
+
+def remember_user(request, user):
+    """Set the remember-me flag on the user.
+
+    A token is automatically generated and stored in the user's session.
+    This token is set as a cookie value by the middleware.
+
+    """
+    token_string = create_token_string(user, None)
+    preset_cookie(request, token_string)
