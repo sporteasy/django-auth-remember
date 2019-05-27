@@ -1,13 +1,10 @@
-import time
 import uuid
 from datetime import datetime, timedelta
 
 from django.conf import settings
-from django.utils.http import cookie_date
+from django.contrib.auth.hashers import make_password
 
-from auth_remember.auth_utils import make_password
-from auth_remember.models import RememberToken
-from auth_remember.settings import COOKIE_AGE, COOKIE_NAME
+from .models import RememberToken
 
 
 def create_token_string(user, token=None):
@@ -16,7 +13,7 @@ def create_token_string(user, token=None):
 
     """
     token_value = uuid.uuid4().hex
-    token_hash = make_password('sha1', token_value)
+    token_hash = make_password(token_value, hasher='sha1')
     token = RememberToken(
         token_hash=token_hash,
         created_initial=token.created_initial if token else None,
@@ -52,20 +49,23 @@ def set_cookie(response, token):
     expires.
 
     """
-    expires = datetime.utcnow() + timedelta(seconds=COOKIE_AGE)
+    expires = datetime.utcnow() + timedelta(seconds=settings.COOKIE_AGE)
 
-    response.set_cookie(COOKIE_NAME, token,
+    response.set_cookie(
+        settings.COOKIE_NAME, token,
         max_age=None, expires=expires,
         domain=settings.SESSION_COOKIE_DOMAIN,
         path=settings.SESSION_COOKIE_PATH,
         secure=settings.SESSION_COOKIE_SECURE or None,
-        httponly=settings.SESSION_COOKIE_HTTPONLY or None)
+        httponly=settings.SESSION_COOKIE_HTTPONLY or None
+    )
 
     return response
 
 
 def delete_cookie(response):
-    response.set_cookie(COOKIE_NAME, "deleted",
+    response.set_cookie(
+        settings.COOKIE_NAME, "deleted",
         max_age=0, expires='Thu, 01-Jan-1970 00:00:00 GMT',
         domain=settings.SESSION_COOKIE_DOMAIN,
         path=settings.SESSION_COOKIE_PATH,
