@@ -1,5 +1,9 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from django.contrib import admin
-from auth_remember import models
+
+from .models import RememberToken
 
 
 class RememberTokenAdmin(admin.ModelAdmin):
@@ -10,4 +14,4 @@ class RememberTokenAdmin(admin.ModelAdmin):
     list_display = ('user', 'token_hash', 'created', 'created_initial')
 
 
-admin.site.register(models.RememberToken, RememberTokenAdmin)
+admin.site.register(RememberToken, RememberTokenAdmin)
