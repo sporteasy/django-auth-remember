@@ -18,13 +18,13 @@ class RememberTokenManager(models.Manager):
         except ValueError:
             return
 
-        max_age = timezone.now() - timedelta(seconds=settings.COOKIE_AGE)
+        max_age = timezone.now() - timedelta(seconds=settings.AUTH_REMEMBER_COOKIE_AGE)
         for token in self.filter(created_initial__gte=max_age, user=user_id):
             if check_password(token_raw, token.token_hash):
                 return token
 
     def clean_remember_tokens(self):
-        max_age = timezone.now() - timedelta(seconds=settings.COOKIE_AGE)
+        max_age = timezone.now() - timedelta(seconds=settings.AUTH_REMEMBER_COOKIE_AGE)
         return self.filter(created_initial__lte=max_age).delete()
 
 
