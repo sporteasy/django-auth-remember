@@ -33,7 +33,7 @@ class RememberToken(models.Model):
     class Meta:
         app_label = 'auth_remember'
 
-    token_hash = models.CharField(max_length=60, blank=False, primary_key=True)
+    token_hash = models.CharField(max_length=165, blank=False, primary_key=True)
 
     created = models.DateTimeField(editable=False, null=True, default=timezone.now)
 
