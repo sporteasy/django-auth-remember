@@ -32,7 +32,6 @@ class RememberToken(models.Model):
 
     class Meta:
         app_label = 'auth_remember'
-        db_table = 'remembertoken'
 
     token_hash = models.CharField(max_length=60, blank=False, primary_key=True)
 
