@@ -1,3 +1,4 @@
+from django.utils.deprecation import MiddlewareMixin
 from django.contrib import auth as django_auth
 from django.contrib.auth import signals
 from django.dispatch import receiver
@@ -6,7 +7,7 @@ from auth_remember import utils
 from auth_remember.settings import COOKIE_NAME, SESSION_KEY
 
 
-class AuthRememberMiddleware(object):
+class AuthRememberMiddleware(MiddlewareMixin):
     def process_request(self, request):
         if request.user.is_authenticated():
             request.user.is_fresh = request.session.get(SESSION_KEY, False)
