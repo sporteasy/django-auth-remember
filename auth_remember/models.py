@@ -1,13 +1,12 @@
-from datetime import timedelta
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from datetime import timedelta
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 
-from auth_remember import settings
+from django.conf import settings
 
 
 class RememberTokenManager(models.Manager):
@@ -41,6 +40,6 @@ class RememberToken(models.Model):
 
     created_initial = models.DateTimeField(editable=False, blank=False)
 
-    user = models.ForeignKey(User, related_name="remember_me_tokens")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="remember_me_tokens")
 
     objects = RememberTokenManager()
