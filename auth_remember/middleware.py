@@ -2,9 +2,10 @@ from django.utils.deprecation import MiddlewareMixin
 from django.contrib import auth as django_auth
 from django.contrib.auth import signals
 from django.dispatch import receiver
+from django.conf import settings
 
 from auth_remember import utils
-from auth_remember.settings import COOKIE_NAME, SESSION_KEY
+from auth_remember.settings import SESSION_KEY
 
 
 class AuthRememberMiddleware(MiddlewareMixin):
@@ -15,7 +16,7 @@ class AuthRememberMiddleware(MiddlewareMixin):
 
         request.user.is_fresh = False
 
-        token = request.COOKIES.get(COOKIE_NAME, None)
+        token = request.COOKIES.get(settings.AUTH_REMEMBER_COOKIE_NAME, None)
         if not token:
             return
         user = django_auth.authenticate(token_string=token)

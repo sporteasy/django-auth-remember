@@ -50,10 +50,10 @@ def set_cookie(response, token):
     expires.
 
     """
-    expires = datetime.utcnow() + timedelta(seconds=settings.COOKIE_AGE)
+    expires = datetime.utcnow() + timedelta(seconds=settings.AUTH_REMEMBER_COOKIE_AGE)
 
     response.set_cookie(
-        settings.COOKIE_NAME, token,
+        settings.AUTH_REMEMBER_COOKIE_NAME, token,
         max_age=None, expires=expires,
         domain=settings.SESSION_COOKIE_DOMAIN,
         path=settings.SESSION_COOKIE_PATH,
@@ -66,11 +66,12 @@ def set_cookie(response, token):
 
 def delete_cookie(response):
     response.set_cookie(
-        settings.COOKIE_NAME, "deleted",
+        settings.AUTH_REMEMBER_COOKIE_NAME, "deleted",
         max_age=0, expires='Thu, 01-Jan-1970 00:00:00 GMT',
         domain=settings.SESSION_COOKIE_DOMAIN,
         path=settings.SESSION_COOKIE_PATH,
         secure=settings.SESSION_COOKIE_SECURE or None,
-        httponly=settings.SESSION_COOKIE_HTTPONLY or None)
+        httponly=settings.SESSION_COOKIE_HTTPONLY or None
+    )
 
     return response
