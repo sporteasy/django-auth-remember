@@ -1,16 +1,20 @@
 import time
 
 from django.contrib import auth
-from django.contrib.auth.models import User, AnonymousUser
+from django.contrib.auth import models
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.http import HttpResponse
 from django.test import TestCase
 from django.test.client import RequestFactory
 
+from django.conf import settings
+
+userModel = settings.AUTH_USER_MODEL
+
 
 class TokenCreationTest(TestCase):
     def setUp(self):
-        self.user = User(username='test_user')
+        self.user = userModel(username='test_user')
         self.user.save()
 
     def test_create_token_string(self):
@@ -109,7 +113,7 @@ class AuthTest(TestCase):
         from auth_remember.utils import create_token_string
 
         request = self.factory.get('/')
-        request.user = AnonymousUser()
+        request.user = models.AnonymousUser()
 
         value = create_token_string(self.user)
         request.COOKIES[COOKIE_NAME] = value

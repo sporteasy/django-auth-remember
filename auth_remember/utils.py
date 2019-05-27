@@ -2,9 +2,9 @@ import uuid
 from datetime import datetime, timedelta
 
 from django.conf import settings
-from django.contrib.auth.hashers import make_password
+from django.apps import AppConfig
 
-from .models import RememberToken
+from django.contrib.auth.hashers import make_password
 
 
 def create_token_string(user, token=None):
@@ -14,7 +14,8 @@ def create_token_string(user, token=None):
     """
     token_value = uuid.uuid4().hex
     token_hash = make_password(token_value, hasher='sha1')
-    token = RememberToken(
+    TokenModel = AppConfig.get('auth_remember.models.RememberToken')
+    token = TokenModel(
         token_hash=token_hash,
         created_initial=token.created_initial if token else None,
         user=user

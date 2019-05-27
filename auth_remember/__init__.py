@@ -1,5 +1,5 @@
-from auth_remember.utils import create_token_string
-from auth_remember.utils import preset_cookie
+from .utils import create_token_string
+from .utils import preset_cookie
 
 
 def remember_user(request, user):

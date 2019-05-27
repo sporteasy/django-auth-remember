@@ -1,5 +1,7 @@
 from django.conf import settings
 
+TOKEN_MODEL = 'auth_remember.models.RememberToken'
+
 COOKIE_NAME = 'remember_token'
 COOKIE_AGE = 86400 * 28  # 4 weeks by default
 SESSION_KEY = 'AUTH_REMEMBER_FRESH'
