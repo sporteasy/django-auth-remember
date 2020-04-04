@@ -9,7 +9,7 @@ from auth_remember.settings import COOKIE_NAME, SESSION_KEY
 
 class AuthRememberMiddleware(MiddlewareMixin):
     def process_request(self, request):
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             request.user.is_fresh = request.session.get(SESSION_KEY, False)
             return
 
