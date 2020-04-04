@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('token_hash', models.CharField(max_length=128, serialize=False, primary_key=True)),
                 ('created', models.DateTimeField(default=django.utils.timezone.now, editable=False)),
                 ('created_initial', models.DateTimeField(editable=False)),
-                ('user', models.ForeignKey(related_name='remember_me_tokens', to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(related_name='remember_me_tokens', to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
             },

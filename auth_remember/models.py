@@ -34,6 +34,6 @@ class RememberToken(models.Model):
 
     created_initial = models.DateTimeField(editable=False, blank=False)
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="remember_me_tokens")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="remember_me_tokens", on_delete=models.CASCADE)
 
     objects = RememberTokenManager()
